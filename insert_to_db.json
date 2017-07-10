@@ -1,0 +1,459 @@
+use beaver
+db.dropDatabase()
+use beaver
+
+//the schema in this file is outdated
+/*--------Copy to here---------*/
+
+product_1_id = ObjectId()
+product_2_id = ObjectId()
+product_3_id = ObjectId()
+product_4_id = ObjectId()
+product_5_id = ObjectId()
+db.products.insertMany([
+    {
+      "_id": product_1_id,
+      "sku": "1001",
+      "name": "Esspresso Roast",
+      "description": "Whole-Bean Coffee",
+      "pricing": {
+        "retail": 5
+      }
+    },
+    {
+      "_id": product_2_id,
+      "sku": "1002",
+      "name": "Brewed Coffee",
+      "description": "Whole-Bean Coffee",
+      "pricing": {
+        "retail": 3
+      }
+    },
+    {
+      "_id": product_3_id,
+      "sku": "1003",
+      "name": "Latte",
+      "description": "Whole-Bean Coffee",
+      "pricing": {
+        "retail": 4
+      }
+    },
+    {
+      "_id": product_4_id,
+      "sku": "1004",
+      "name": "Hot Chocolate",
+      "description": "Whole-Bean Coffee (Cocoa Mix)",
+      "pricing": {
+        "retail": 5
+      }
+    },
+    {
+      "_id": product_5_id,
+      "sku": "1005",
+      "name": "Whole Bean French Roast",
+      "description": "Whole-Bean Coffee",
+      "pricing": {
+        "retail": 7
+      }
+    }
+])
+
+/*--------Copy to here---------*/
+db.locations.insertOne( {'country': 'sweden', 'city': 'malmo', 'street': 'centralen', 'stock_quantities': {
+		"1001" : 100,
+		"1002" : 100,
+		"1003" : 100,
+		"1004" : 100,
+		"1005" : 100
+	}})
+location_1_id = ObjectId()
+db.locations.insertOne({
+  "_id": location_1_id,
+  "country": "sweden",
+  "city": "malmo",
+  "street": "lilla torg",
+  "stock_quantities": {
+    "1001": 4997,
+    "1002": 4994,
+    "1003": 5000,
+    "1004": 4999,
+    "1005": 4999
+  }
+})
+
+/*--------Copy to here---------*/
+
+/*--------Don't copy this---------*/
+/* Things to do at every finished order
+1. check if document with shop_id and ISODATE("yyyy-mm-yy") exist, else create
+2. chech if document in stock_quantities with id(sku) exist,
+3. update quantity at hour-key
+4. for a new hour need to take stock-qty from previous hour as start-value.
+5. for new day, get current qty in shop.
+*/
+db.stock_quantities_history({
+  "_id": ObjectId()
+  "date": new Date("2016-10-10")//ISODate("2016-10-10T00:00:00Z")
+  "shop_id": location_1_id,
+  "stock_quantities": [
+    {
+      "_id": "1001",
+      "end_of_day": 3000,
+      "hours": {
+        8: 5000,
+        9: 4950,
+        10: 4900,
+        11: 4800...
+      }
+    },
+    {
+      "_id": "1002",
+      "end_of_day": 3777,
+      "hours": {
+        8: 5000,
+        9: 4970,
+        10: 4700,
+        11: 4000...
+      }
+    }
+  ]
+})
+/*--------Don't copy this above---------*/
+
+customer_1_id = ObjectId()
+db.regCustomers.insertOne({
+  "_id": customer_1_id,
+  "ssn": "19600505-1234",
+  "address": {
+    "country": "sweden",
+    "city": "malmo"
+  },
+  "occupation": ["Truck driver"],
+  "entry_date": ISODate("2016-00-00T10:00:00Z"),
+  "personal_card": {
+    "_id": ObjectId(),
+    "country": "sweden"
+  }
+})
+
+customer_2_id = ObjectId()
+db.regCustomers.insertOne({
+  "_id": customer_2_id,
+  "ssn": "19700101-6789",
+  "address": {
+    "country": "sweden",
+    "city": "lund"
+  },
+  "occupation": ["Programmer"],
+  "entry_date": ISODate("2016-00-00T11:00:00Z"),
+  "personal_card": {
+    "_id": ObjectId(),
+    "country": "sweden"
+  }
+})
+
+customer_3_id = ObjectId()
+db.regCustomers.insertOne({
+  "_id": customer_3_id,
+  "ssn": "19750211-9090",
+  "address": {
+    "country": "sweden",
+    "city": "stockholm"
+  },
+  "occupation": ["Teacher"],
+  "entry_date": ISODate("2016-03-00T14:00:00Z"),
+  "personal_card": {
+    "_id": ObjectId(),
+    "country": "sweden"
+  }
+})
+
+customer_4_id = ObjectId()
+db.regCustomers.insertOne({
+  "_id": customer_4_id,
+  "ssn": "19850211-9191",
+  "address": {
+    "country": "sweden",
+    "city": "stockholm",
+    "postal_code": "08308"
+  },
+  "occupation": ["Teacher"],
+  "entry_date": ISODate("2016-03-05T14:00:00Z"),
+  "personal_card": {
+    "_id": ObjectId(),
+    "country": "sweden"
+  }
+})
+
+customer_5_id = ObjectId()
+db.regCustomers.insertOne({
+  "_id": customer_5_id,
+  "ssn": "19950211-9294",
+  "address": {
+    "country": "sweden",
+    "city": "stockholm",
+    "postal_code": "08308"
+  },
+  "occupation": ["Bay Watcher"],
+  "entry_date": ISODate("2016-03-05T15:00:00Z"),
+  "personal_card": {
+    "_id": ObjectId(),
+    "country": "sweden"
+  }
+})
+
+/*--------Copy to here---------*/
+branch_manager_1_id = ObjectId()
+db.branch_managers.insertOne({
+  '_id': branch_mamager_1_id,
+  'name': 'James King',
+  'ssn': '19551212-9999',
+  'shop_id': ObjectId("59410e2ba81610932dc471ba")//location_1_id
+})
+
+/*--------Copy to here---------*/
+sales_manager_1_id = ObjectId()
+db.sales_managers.insertOne({
+  '_id': sales_manager_1_id,
+  'name': 'Amanda Daylight',
+  'ssn': '19620303-2222',
+})
+/*--------Copy to here---------*/
+
+
+employee_1_id = ObjectId()
+db.employees.insertOne({
+  "_id": employee_1_id,
+  "name": "Emma Thomsson",
+  "ssn": "19751010-5544",
+  "work_in_shop": location_1_id,
+  "entry_date": ISODate("2016-00-00T09:00:00Z"),
+  "employment_history": [],
+  "comments": []
+})
+
+employee_2_id = ObjectId()
+db.employees.insertOne({
+  "_id": employee_2_id,
+  "name": "Polly Larsson",
+  "ssn": "19780303-6677",
+  "work_in_shop": location_1_id,
+  "entry_date": ISODate("2016-00-00T09:00:00Z"),
+  "employment_history": [],
+  "comments": []
+})
+
+/*--------Copy to here---------*/
+
+order_1_id = ObjectId()
+db.orders.insertOne({
+  "_id": order_1_id,
+  "employee_id": employee_1_id,
+  "customer_id": customer_1_id,
+  "shop_id": location_1_id,
+  "state": "finished",
+  "order_items": [
+    {
+      "_id": product_1_id,
+      "sku": "1001",
+      "name": "Esspresso Roast",
+      "quantity": 2,
+      "pricing": {
+        "retail": 5
+      }
+    }
+  ],
+  "total_sum": 10,
+  "currency": "SEK",
+  "entry_date": ISODate("2016-00-00T12:12:00Z")
+})
+
+order_2_id = ObjectId()
+db.orders.insertOne({
+  "_id": order_2_id,
+  "employee_id": employee_1_id,
+  "customer_id": customer_2_id,
+  "shop_id": location_1_id,
+  "state": "finished",
+  "order_items": [
+    {
+      "_id": product_1_id,
+      "sku": "1001",
+      "name": "Esspresso Roast",
+      "quantity": 1,
+      "pricing": {
+        "retail": 5
+      }
+    },
+    {
+      "_id": product_2_id,
+      "sku": "1002",
+      "name": "Brewed Coffee",
+      "quantity": 3,
+      "pricing": {
+        "retail": 3
+      }
+    },
+    {
+      "_id": product_4_id,
+      "sku": "1004",
+      "name": "Hot Chocolate",
+      "quantity": 1,
+      "pricing": {
+        "retail": 7
+      }
+    }
+  ],
+  "total_sum": 21,
+  "currency": "SEK",
+  "entry_date": ISODate("2016-00-00T11:02:00Z")
+})
+
+order_3_id = ObjectId()
+db.orders.insertOne({
+  "_id": order_3_id,
+  "employee_id": employee_2_id,
+  "customer_id": "none",
+  "shop_id": location_1_id,
+  "state": "finished",
+  "order_items": [
+    {
+      "_id": product_5_id,
+      "sku": "1005",
+      "name": "Whole Bean French Roast",
+      "quantity": 1,
+      "pricing": {
+        "retail": 7
+      }
+    }
+  ],
+  "total_sum": 7,
+  "currency": "SEK",
+  "entry_date": ISODate("2016-00-00T11:15:00Z")
+})
+
+order_4_id = ObjectId()
+db.orders.insertOne({
+  "_id": order_4_id,
+  "employee_id": employee_1_id,
+  "customer_id": "none",
+  "shop_id": location_1_id,
+  "state": "finished",
+  "order_items": [
+    {
+      "_id": product_2_id,
+      "sku": "1002",
+      "name": "Brewed Coffee",
+      "quantity": 3,
+      "pricing": {
+        "retail": 3
+      }
+    }
+  ],
+  "total_sum": 9,
+  "currency": "SEK",
+  "entry_date": ISODate("2016-00-00T11:20:00Z")
+})
+
+order_5_id = ObjectId()
+db.orders.insertOne({
+  "_id": order_5_id,
+  "employee_id": employee_1_id,
+  "customer_id": customer_4_id,
+  "shop_id": location_1_id,
+  "state": "finished",
+  "order_items": [
+    {
+      "_id": product_2_id,
+      "sku": "1002",
+      "name": "Brewed Coffee",
+      "quantity": 3,
+      "pricing": {
+        "retail": 3
+      }
+    }
+  ],
+  "total_sum": 9,
+  "currency": "SEK",
+  "entry_date": ISODate("2016-03-05T14:01:00Z")
+})
+
+order_6_id = ObjectId()
+db.orders.insertOne({
+  "_id": order_6_id,
+  "employee_id": employee_1_id,
+  "customer_id": customer_5_id,
+  "shop_id": location_1_id,
+  "state": "finished",
+  "order_items": [
+    {
+      "_id": product_2_id,
+      "sku": "1002",
+      "name": "Brewed Coffee",
+      "quantity": 10,
+      "pricing": {
+        "retail": 3
+      }
+    }
+  ],
+  "total_sum": 30,
+  "currency": "SEK",
+  "entry_date": ISODate("2016-03-05T15:01:00Z")
+})
+
+/*--------Copy to here---------*/
+
+db.stock_history.insertOne({
+  '_id': ObjectId(),
+  "date": new Date("2016-10-10"),
+  "shop_id": ObjectId("59410e2ba81610932dc471ba"),
+  "stock_quantities": {
+    "1001": 100,
+    "1002": 100,
+    "1003": 100,
+    "1004": 100,
+    "1005": 100
+  }
+})
+//get last document
+//db.stock_history.find({'shop_id': ObjectId("59410e2ba81610932dc471ba")}).sort({_id:-1}).limit(1)
+db.stock_history.update(
+    {'_id': ObjectId("595a100d95762a870402d5be")},
+    {
+        $set: {
+          'stock_quantities': {
+            "1001": 100,
+            "1002": 100,
+            "1003": 100,
+            "1004": 100,
+            "1005": 100
+          }
+        }
+    }
+)
+
+//find the hour quantity
+db.stock_history.find(
+  { 'shop_id': ObjectId("59410e2ba81610932dc471ba"),
+    'date': new Date('2016-10-10'),
+  },
+  {'stock_quantities.1001': 1}
+).count()
+
+//---------------------Update/increment stock_history hours qty----------
+
+db.stock_history.update(
+  {'shop_id': ObjectId("59410e2ba81610932dc471ba"), 'date': new Date('2016-10-10')},
+  {
+    $set: { 'stock_quantities.1001.hours.8': 10000 }
+  }
+)
+
+db.stock_history.update(
+  { 'shop_id': ObjectId("59410e2ba81610932dc471ba"),
+    'date': new Date('2016-10-10')
+  },
+  {
+    $inc: { 'stock_quantities.1001.hours.8': -5 }
+  }
+)

@@ -1,0 +1,116 @@
+----------branch_manager----------
+{
+  _id: ObjectId,
+  name: String,
+  ssn: String,
+  shop_id: ObjectId
+}
+
+----------sales_manager-----------
+{
+  _id: ObjectId,
+  name: String,
+  ssn: String
+}
+
+----------employee----------
+{
+  _id: ObjectId,
+  name: String,
+  ssn: String,
+  shop_id: ObjectId
+  entry_date: Date,
+  employement_history: [
+    {
+      city: String,
+      percent_of_full_time: Number,
+      start_date: Date,
+      end_date: Date
+    },
+    ...
+  ],
+  comments: [
+    {
+      author: ObjectId,
+      entry_date: Date,
+      content: String
+    },
+    ...
+  ]
+}
+
+----------reg_customer----------
+{
+  _id: ObjectId,
+  ssn: String,
+  occupation: String,
+  adress: {
+    country: String,
+    city: String,
+    zip_postal_code: String
+  },
+  personal_card: {
+    code: String,
+    country: String
+  },
+  entry_date: Date,
+}
+
+----------order----------
+{
+  _id: ObjectId,
+  employee_id: ObjectId,
+  costumer_id: ObjectId or String,
+  shop_id: ObjectId,
+  state: String,
+  order_items: [
+    {
+      _id: ObjectId,
+      sku: String,
+      name: String,
+      quantity: Number,
+      pricing: {
+        retail: Number
+      }
+    },
+    ...
+  ],
+  total_sum: Number,
+  currency: String,
+  entry_date: Date
+}
+
+----------product----------
+{
+  _id: ObjectId,
+  sku: String,
+  name: String,
+  description: String,
+  pricing: {
+    retail: Number
+  }
+}
+
+
+----------shop----------
+{
+  _id: ObjectId,
+  country: String,
+  city: String,
+  street: String,
+  stock_quantities: {
+    String(sku): Number(qty),
+    ...
+  }
+}
+
+----------stock_history----------
+{
+  _id: ObjectId,
+  date: Date,
+  shop_id: ObjectId,
+  stock_quantities: {
+    String(sku): Number(qty),
+    ...
+  }
+}
