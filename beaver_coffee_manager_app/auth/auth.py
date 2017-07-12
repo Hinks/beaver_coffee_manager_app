@@ -77,7 +77,7 @@ def clear_session(app_data):
 
 
 def fetch_shops(db):
-    return db.locations.find()
+    return db.shops.find()
 
 
 def select_shop(shops):

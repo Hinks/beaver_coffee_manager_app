@@ -14,7 +14,7 @@ def create_employee(shop_id):
     emp_document = {
         'name': name,
         'ssn': ssn,
-        'work_in_shop': shop_id,
+        'shop_id': shop_id,
         'entry_date': datetime.datetime.utcnow(),
         'employment_history': [],
         'comments': []
@@ -25,7 +25,7 @@ def create_employee(shop_id):
 def read(db, shop_id):
     emp_id_str = input('Enter id for employee to read: ')
     emp_id = ObjectId(emp_id_str)
-    emp = db.employees.find_one({'_id': emp_id, 'work_in_shop': shop_id})
+    emp = db.employees.find_one({'_id': emp_id, 'shop_id': shop_id})
 
     if emp:
         return employee_info_str(emp)

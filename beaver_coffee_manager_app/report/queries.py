@@ -56,7 +56,7 @@ def avg_sales_per_customer_per_city(db, shop_id):
         },
         {'$project': {'_id': 0, 'customer_id': 1, 'order_items': 1}},
         {'$lookup': {
-            'from': 'regCustomers',
+            'from': 'reg_customers',
             'localField': 'customer_id',
             'foreignField': '_id',
             'as': 'customer'
@@ -120,7 +120,7 @@ def orders_served_by_employee(db, shop_id ,employee_id, time_period):
 def list_employees_by_dates(db, shop_id, time_period):
     query = {
       '$and': [
-        {'work_in_shop': shop_id},
+        {'shop_id': shop_id},
         {'entry_date': {'$gte': time_period[0]} },
         {'entry_date': {'$lte': time_period[1]} }
       ]

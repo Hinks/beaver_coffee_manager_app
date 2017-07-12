@@ -67,7 +67,7 @@ def update_shopstock_and_stockhistory(db, shop_id, date, sku, qty):
 
 def fetch_shop(db, shop_id):
     """ Returns the specified shop as a dictionary."""
-    return db.locations.find_one({'_id': shop_id})
+    return db.shops.find_one({'_id': shop_id})
 
 
 def fetch_historical_shop_stock(db, shop_id, date):
@@ -91,7 +91,7 @@ def fetch_latest_historical_shop_stock(db, shop_id):
 
 def update_shop_stock(db, shop_id, sku, qty):
     """ Updates the stock quantity for a product in the shop."""
-    return db.locations.update({'_id': shop_id},
+    return db.shops.update({'_id': shop_id},
         {'$inc': {f'stock_quantities.{sku}': qty}}
     )
 

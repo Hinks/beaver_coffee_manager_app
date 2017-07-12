@@ -6,7 +6,7 @@ import datetime
 
 def create(db):
     new_customer = create_customer()
-    return db.regCustomers.insert_one(new_customer)
+    return db.reg_customers.insert_one(new_customer)
 
 
 def create_customer():
@@ -35,7 +35,7 @@ def create_customer():
 def read(db):
     customer_id_str = input('Enter id for customer to read: ')
     customer_id = ObjectId(customer_id_str)
-    customer = db.regCustomers.find_one({'_id': customer_id})
+    customer = db.reg_customers.find_one({'_id': customer_id})
 
     if customer:
         return customer_info_str(customer)
@@ -71,7 +71,7 @@ def update(db):
 
     try:
         new_customer_data = contains_entry_date(json.loads(json_input))
-        db.regCustomers.update({'_id': customer_id}, {'$set': new_customer_data})
+        db.reg_customers.update({'_id': customer_id}, {'$set': new_customer_data})
         return 'Customer update successful'
     except json.JSONDecodeError as e:
         return 'Invalid json string, nothing is changed'

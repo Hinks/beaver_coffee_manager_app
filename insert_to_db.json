@@ -59,7 +59,7 @@ db.products.insertMany([
 ])
 
 /*--------Copy to here---------*/
-db.locations.insertOne( {'country': 'sweden', 'city': 'malmo', 'street': 'centralen', 'stock_quantities': {
+db.shops.insertOne( {'country': 'sweden', 'city': 'malmo', 'street': 'centralen', 'stock_quantities': {
 		"1001" : 100,
 		"1002" : 100,
 		"1003" : 100,
@@ -67,7 +67,7 @@ db.locations.insertOne( {'country': 'sweden', 'city': 'malmo', 'street': 'centra
 		"1005" : 100
 	}})
 location_1_id = ObjectId()
-db.locations.insertOne({
+db.shops.insertOne({
   "_id": location_1_id,
   "country": "sweden",
   "city": "malmo",
@@ -121,7 +121,7 @@ db.stock_quantities_history({
 /*--------Don't copy this above---------*/
 
 customer_1_id = ObjectId()
-db.regCustomers.insertOne({
+db.reg_customers.insertOne({
   "_id": customer_1_id,
   "ssn": "19600505-1234",
   "address": {
@@ -137,7 +137,7 @@ db.regCustomers.insertOne({
 })
 
 customer_2_id = ObjectId()
-db.regCustomers.insertOne({
+db.reg_customers.insertOne({
   "_id": customer_2_id,
   "ssn": "19700101-6789",
   "address": {
@@ -153,7 +153,7 @@ db.regCustomers.insertOne({
 })
 
 customer_3_id = ObjectId()
-db.regCustomers.insertOne({
+db.reg_customers.insertOne({
   "_id": customer_3_id,
   "ssn": "19750211-9090",
   "address": {
@@ -169,7 +169,7 @@ db.regCustomers.insertOne({
 })
 
 customer_4_id = ObjectId()
-db.regCustomers.insertOne({
+db.reg_customers.insertOne({
   "_id": customer_4_id,
   "ssn": "19850211-9191",
   "address": {
@@ -186,7 +186,7 @@ db.regCustomers.insertOne({
 })
 
 customer_5_id = ObjectId()
-db.regCustomers.insertOne({
+db.reg_customers.insertOne({
   "_id": customer_5_id,
   "ssn": "19950211-9294",
   "address": {
@@ -226,7 +226,7 @@ db.employees.insertOne({
   "_id": employee_1_id,
   "name": "Emma Thomsson",
   "ssn": "19751010-5544",
-  "work_in_shop": location_1_id,
+  "shop_id": location_1_id,
   "entry_date": ISODate("2016-00-00T09:00:00Z"),
   "employment_history": [],
   "comments": []
@@ -237,7 +237,7 @@ db.employees.insertOne({
   "_id": employee_2_id,
   "name": "Polly Larsson",
   "ssn": "19780303-6677",
-  "work_in_shop": location_1_id,
+  "shop_id": location_1_id,
   "entry_date": ISODate("2016-00-00T09:00:00Z"),
   "employment_history": [],
   "comments": []
