@@ -8,8 +8,8 @@ you have to meet the requirements in requirements.txt
 
 Some of the queries require knowledge of id:s and ssn:s.
 For example have a mongo shell open alongside the app and find the right id:s and ssn:s
-by queries like:
-db.branch_managers.find().pretty()
-db.sales_managers.find().pretty()
-db.employees.find().pretty()
+by queries like:\n
+db.branch_managers.find().pretty()\n
+db.sales_managers.find().pretty()\n
+db.employees.find().pretty()\n
 db.reg_customers.find().pretty()
