@@ -21,7 +21,7 @@ def branch_manager_login(db, app_data):
     if branch_manager:
         new_app_data = pipe(app_data,
             update_current_rules('branch_mgmt_rules'),
-            validate_session(branch_manager['shop_id']))
+            validate_session(branch_manager['shop_id'], 'branch_manager'))
 
         print('You logged-in successfully as Branch Manager')
         print_utils.branch_m_start_screen()
@@ -44,7 +44,7 @@ def sales_manager_login(db, app_data):
 
         new_app_data = pipe(app_data,
             update_current_rules('sales_mgmt_rules'),
-            validate_session(shop['_id']))
+            validate_session(shop['_id'], 'sales_manager'))
 
         print('You logged-in successfully as Sales Manager')
         print_utils.sales_m_start_screen()
@@ -55,7 +55,7 @@ def sales_manager_login(db, app_data):
         return app_data
 
 
-def logout(app_data):
+def logout(db, app_data):
     new_app_data = pipe(app_data,
         update_current_rules('NoneExistingRules'),
         clear_session)
@@ -68,12 +68,14 @@ def update_current_rules(mgmt_rules):
     return lambda app_data: assoc(app_data, 'current_rules', app_data.get(mgmt_rules, None))
 
 
-def validate_session(shop_id):
-    return lambda app_data: assoc(app_data, 'session', {'is_authenticated': True, 'shop_id': shop_id})
+def validate_session(shop_id, logged_in_as):
+    return lambda app_data: assoc(app_data, 'session',
+    {'is_authenticated': True, 'logged_in_as': logged_in_as, 'shop_id': shop_id})
 
 
 def clear_session(app_data):
-    return assoc(app_data, 'session', {'is_authenticated': False, 'shop_id': None})
+    return assoc(app_data, 'session',
+    {'is_authenticated': False, 'logged_in_as': None, 'shop_id': None})
 
 
 def fetch_shops(db):
