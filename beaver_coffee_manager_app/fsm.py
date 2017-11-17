@@ -3,50 +3,44 @@ from auth.auth import authenticate
 import print_utils
 
 
-def function_arity(fun):
-    import inspect
-    return len(inspect.getargspec(fun)[0])
-
-
 def accept(app_data, key, db):
     """ Jumps to the next state that is specified in the rules from
     app_data['current_rules'] and runs the supplied function.
     """
     try:
         current_state = app_data['state']
-        new_state = app_data['current_rules'][current_state][key].get('next_state')
-        supplied_func = app_data['current_rules'][current_state][key].get('supplied_func')
+        next_state = app_data['current_rules'][current_state][key].get('next_state')
+
+        supplied_state_func = app_data['current_rules'][current_state][key].get('supplied_func')
+        func_description = supplied_state_func[0]
 
         session = app_data['session']
 
-        # Match what to do depending on the supplied function's arity
-        #This matches the lambda function in the rules module
-        if function_arity(supplied_func) is 0:
-            supplied_func()
-            return assoc(app_data, 'state', new_state)
+        if func_description == 'exit_app':
+            # Returns appdata with the state-field set to exit, which will exit
+            # the application inside the run-next function.
+            return assoc(app_data, 'state', next_state)
 
-        #This matches the print_utils.start_screen function in the rules module
-        elif function_arity(supplied_func) == 1:
-            supplied_func(session['logged_in_as'])()
-            return assoc(app_data, 'state', new_state)
+        elif func_description == 'print_start_screen':
+            print_func = supplied_state_func[1]
+            print_func(session['logged_in_as'])()
+            return assoc(app_data, 'state', next_state)
 
-        #This matches the logout function in the rules module
-        elif function_arity(supplied_func) == 2:
-            return supplied_func(db, assoc(app_data, 'state', new_state))
+        elif func_description == 'unauth':
+            logout_func = supplied_state_func[1]
+            #Returns a new app_data with rules removed.
+            return logout_func(db, assoc(app_data, 'state', next_state))
 
-        #This matches the buisness_logic function in the rules module
-        elif function_arity(supplied_func) == 3:
-            supplied_func(db, new_state, session)
-            return assoc(app_data, 'state', new_state)
-
-        # Just in case nothing matches, app_data is returned in the state it came in with.
+        elif func_description == 'mgmt_operation':
+            buisness_operation = supplied_state_func[1]
+            buisness_operation(db, next_state, session)
+            return assoc(app_data, 'state', next_state)
         else:
             return app_data
     except KeyError as e:
         print(f'{key} is not a valid option.')
         print_utils.start_screen(app_data['session']['logged_in_as'])()
         return  assoc(app_data, 'state', 'start_screen')
-
 
 
 def run_next(db, app_data):
