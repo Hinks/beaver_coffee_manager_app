@@ -57,6 +57,9 @@ def sales_manager_login(db, app_data):
 
 def logout(db, app_data):
     new_app_data = pipe(app_data,
+        # NoneExistingRules doesn't exist as a field in appdata and will because
+        # of that return None. So the current_rules field in appdata will be set
+        # to None.
         update_current_rules('NoneExistingRules'),
         clear_session)
 
