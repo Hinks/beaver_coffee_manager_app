@@ -6,7 +6,7 @@ def start_screen(logged_in_as):
     return screens[logged_in_as]
 
 
-def bll_instructions(next_state):
+def mgmt_instructions(next_state):
     instructions = {
         'statistics': instructions_statistics,
         'cru_employee': instructions_cru_employee,
