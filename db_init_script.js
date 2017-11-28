@@ -101,7 +101,7 @@ try {
   print (e)
 }
 
-//branch manager
+//branch managers
 var branch_manager_id_1 = ObjectId()
 try {
   db.branch_managers.insertOne({
@@ -109,6 +109,18 @@ try {
     'name': 'James King',
     'ssn': '19551212-9999',
     'shop_id': shop_id_1
+  })
+} catch (e) {
+  console.log();
+}
+
+var branch_manager_id_2 = ObjectId()
+try {
+  db.branch_managers.insertOne({
+    '_id': branch_manager_id_2,
+    'name': 'James Junior',
+    'ssn': '19551212-8888',
+    'shop_id': shop_id_2
   })
 } catch (e) {
   console.log();
