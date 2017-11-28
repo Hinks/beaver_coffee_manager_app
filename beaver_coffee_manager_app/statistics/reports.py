@@ -49,7 +49,6 @@ def report_4(db, shop_id):
 
 
 def report_5(db, shop_id):
-    #pmela id: 59410e4aa81610932dc471c1
     employee_id = input('Enter id for employee: ')
     date1_str, date2_str = enter_time_period()
 

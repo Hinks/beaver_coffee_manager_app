@@ -1,8 +1,3 @@
-"""The purpose of this module is to supply functions that gets executed
-at particular states in the finite-state-machine concerning buisness-logic
-operations like creating statistics reports,
-change employee/customer data and update stock quantities.
-"""
 from pprint import pprint
 import print_utils
 
@@ -12,7 +7,7 @@ import cru.customer
 import cru.stock
 
 
-BUISNESS_LOGIC_LAYER = {
+MGMT_OPERATIONS = {
     'statistics': {
         '1': statistics.reports.report_1,
         '2': statistics.reports.report_2,
@@ -38,33 +33,23 @@ BUISNESS_LOGIC_LAYER = {
     }
 }
 
+def select_mgmt_operation(db, next_state, user_session):
+    print_utils.mgmt_instructions(next_state)()
 
-def function_arity(fun):
-    import inspect
-    return len(inspect.getargspec(fun)[0])
+    buisness_logic_context = MGMT_OPERATIONS.get(next_state, None)
+    choice = input('\nType the number of the action to pcru_employeeerform: ')
 
+    try:
+        context_operation = buisness_logic_context[choice]
 
-def buisness_logic(db, next_state, user_session):
-    print_utils.bll_instructions(next_state)()
-
-    buisness_logic_context = BUISNESS_LOGIC_LAYER.get(next_state, None)
-    choice = input('\nType the number of the action to perform: ')
-    context_operation = buisness_logic_context.get(choice, None)
-
-    if context_operation:
-        # Match what to do depending on the supplied function's arity
-        #This matches the cru.customer functions in the buisness_logic_layer
-        if function_arity(context_operation) is 1:
-            result = context_operation(db)
-            print(result)
-            print_utils.instructions_after(next_state)()
-
-        #This matches the functions in the buisness_logic_layer
-        #
-        elif function_arity(context_operation) is 2:
+        if next_state == 'statistics' or 'cru_employee' or 'cru_stock':
             result = context_operation(db, user_session['shop_id'])
             print(result)
             print_utils.instructions_after(next_state)()
-    else:
-        print(f'That context operation does not exist: {choice}')
+        elif next_state == 'cru_stock':
+            result = context_operation(db)
+            print(result)
+            print_utils.instructions_after(next_state)()
+    except KeyError as e:
+        print(f'Operation: {choice} does not exist:')
         print_utils.instructions_after(next_state)()
