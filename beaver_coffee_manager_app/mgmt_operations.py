@@ -37,7 +37,7 @@ def select_mgmt_operation(db, next_state, user_session):
     print_utils.mgmt_instructions(next_state)()
 
     buisness_logic_context = MGMT_OPERATIONS.get(next_state, None)
-    choice = input('\nType the number of the action to pcru_employeeerform: ')
+    choice = input('\nType the number of the action to perform: ')
 
     try:
         context_operation = buisness_logic_context[choice]
