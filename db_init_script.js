@@ -226,6 +226,8 @@ try {
 //employee
 var employee_id_1 = ObjectId()
 var employee_id_2 = ObjectId()
+var employee_id_3 = ObjectId()
+
 try {
   db.employees.insertMany([
     {
@@ -242,6 +244,15 @@ try {
       "name": "Polly Larsson",
       "ssn": "19780303-6677",
       "shop_id": shop_id_1,
+      "entry_date": init_date,
+      "employment_history": [],
+      "comments": []
+    },
+    {
+      "_id": employee_id_3,
+      "name": "Kelly Smith",
+      "ssn": "19720303-5557",
+      "shop_id": shop_id_2,
       "entry_date": init_date,
       "employment_history": [],
       "comments": []
