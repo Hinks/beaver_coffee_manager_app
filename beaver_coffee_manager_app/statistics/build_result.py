@@ -1,26 +1,5 @@
 
 
-def report_1_string(cursor, date1_str, date2_str):
-    result = f'---------Report---------\nProducts sold between {date1_str} and {date2_str}\n'
-    for item in cursor:
-        name = item['name']
-        count = item['count']
-        item_str = '\n{0:25} amount: {1}'.format(name, count)
-        result += item_str
-
-    return result + '\n---------End---------'
-
-
-def report_3_string(cursor):
-    result = f'---------Report---------\nAverage sales per customer per city\n'
-    for item in cursor:
-        city = item['_id']
-        avg_sales = item['avg_sales_per_customer']
-        item_str = '\n{0:10} amount: {1}'.format(city, avg_sales)
-        result += item_str
-
-    return result + '\n---------End---------'
-
 def report_4_string(cursor, date1_str, date2_str):
     result = f'---------Report---------\nStock quantities between {date1_str} and {date2_str}\n'
     for item in cursor:
