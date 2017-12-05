@@ -1,22 +1,5 @@
 
 
-def report_4_string(cursor, date1_str, date2_str):
-    result = f'---------Report---------\nStock quantities between {date1_str} and {date2_str}\n'
-    for item in cursor:
-        date = item['date']
-        stock_quantities = item['stock_quantities']
-
-        stock_quantities_string = ''
-        for k,v in stock_quantities.items():
-            item_str = '\nsku: {0:6} qty: {1:5}'.format(k, v)
-            stock_quantities_string += item_str
-
-        item_str = '\n\ndate: {0:10} \n {1}'.format(date.strftime("%Y-%m-%d"), stock_quantities_string)
-        result += item_str
-
-    return result + '\n---------End---------'
-
-
 def report_5_string(cursor, date1_str, date2_str):
     result = f'---------Report---------\nOrders served by employee between {date1_str} and {date2_str}\n'
     for item in cursor:
