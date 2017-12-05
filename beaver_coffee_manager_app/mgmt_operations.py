@@ -9,13 +9,13 @@ import cru.stock
 
 MGMT_OPERATIONS = {
     'statistics': {
-        '1': statistics.reports.report_1,
-        '2': statistics.reports.report_2,
-        '3': statistics.reports.report_3,
-        '4': statistics.reports.report_4,
-        '5': statistics.reports.report_5,
-        '6': statistics.reports.report_6,
-        '7': statistics.reports.report_7
+        '1': statistics.reports.product_sales,
+        '2': statistics.reports.specific_product_sales,
+        '3': statistics.reports.avg_sales_per_city,
+        '4': statistics.reports.stock_quantities,
+        '5': statistics.reports.serverd_orders_employee,
+        '6': statistics.reports.employee_listing,
+        '7': statistics.reports.customer_listing
     },
     'cru_employee': {
         '1': cru.employee.create,
