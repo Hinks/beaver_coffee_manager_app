@@ -1,7 +1,6 @@
 from datetime import datetime
+import functools
 from statistics.build_result import (
-    report_1_string,
-    report_3_string,
     report_4_string,
     report_5_string,
     report_6_string,
@@ -17,38 +16,51 @@ from statistics.queries import (
     list_customer_by_dates)
 
 
-def report_1(db, shop_id):
+def product_sales(db, shop_id):
     date1_str, date2_str = enter_time_period()
     cursor = sales_all_products_by_dates(db, shop_id, time_period(date1_str, date2_str))
 
-    result = report_1_string(cursor, date1_str, date2_str)
-    return result
+    title = f'---------Report---------\nProducts sold between {date1_str} and {date2_str}\n'
+    ending = '\n---------End---------'
+    product_sold_total_times = lambda acc, item: acc + '\n{0:25} amount: {1}'.format(item['name'], item['count'])
+    statistic_string = functools.reduce(product_sold_total_times, cursor, title) + ending
+
+    return statistic_string
 
 
-def report_2(db, shop_id):
+def specific_product_sales(db, shop_id):
     date1_str, date2_str = enter_time_period()
     skus_string = input('select products by sku, format: 1001, 1002: ')
     sku_list = unpack_sku_list(skus_string)
     cursor = sales_choosen_products_by_dates(db, shop_id, sku_list, time_period(date1_str, date2_str))
 
-    result = report_1_string(cursor, date1_str, date2_str)
-    return result
+    title = f'---------Report---------\nProducts:{skus_string} sold between {date1_str} and {date2_str}\n'
+    ending = '\n---------End---------'
+    product_sold_total_times = lambda acc, item: acc + '\n{0:25} amount: {1}'.format(item['name'], item['count'])
+    statistic_string = functools.reduce(product_sold_total_times, cursor, title) + ending
+
+    return statistic_string
 
 
-def report_3(db, shop_id):
+def avg_sales_per_city(db, shop_id):
     cursor = avg_sales_per_customer_per_city(db, shop_id)
-    result = report_3_string(cursor)
-    return result
+
+    title = f'---------Report---------\nAverage sales per customer per city\n'
+    ending = '\n---------End---------'
+    avg_sales_per_city = lambda acc, item: acc + '\n{0:10} amount: {1}'.format(item['_id'], item['avg_sales_per_customer'])
+    statistic_string = functools.reduce(avg_sales_per_city, cursor, title) + ending
+
+    return statistic_string
 
 
-def report_4(db, shop_id):
+def stock_quantities(db, shop_id):
     date1_str, date2_str = enter_time_period()
     cursor = stock_quantities_by_dates(db, shop_id, time_period(date1_str, date2_str))
     result = report_4_string(cursor, date1_str, date2_str)
     return result
 
 
-def report_5(db, shop_id):
+def serverd_orders_employee(db, shop_id):
     employee_id = input('Enter id for employee: ')
     date1_str, date2_str = enter_time_period()
 
@@ -57,13 +69,13 @@ def report_5(db, shop_id):
     return result
 
 
-def report_6(db, shop_id):
+def employee_listing(db, shop_id):
     date1_str, date2_str = enter_time_period()
     cursor = list_employees_by_dates(db, shop_id, time_period(date1_str, date2_str))
     result = report_6_string(cursor, date1_str, date2_str)
     return result
 
-def report_7(db, shop_id):
+def customer_listing(db, shop_id):
     date1_str, date2_str = enter_time_period()
     cursor = list_customer_by_dates(db, shop_id, time_period(date1_str, date2_str))
     result = report_7_string(cursor, date1_str, date2_str)
