@@ -1,7 +1,6 @@
 from datetime import datetime
-import functools
+from functools import reduce
 from statistics.build_result import (
-    report_4_string,
     report_5_string,
     report_6_string,
     report_7_string)
@@ -23,7 +22,7 @@ def product_sales(db, shop_id):
     title = f'---------Report---------\nProducts sold between {date1_str} and {date2_str}\n'
     ending = '\n---------End---------'
     product_sold_total_times = lambda acc, item: acc + '\n{0:25} amount: {1}'.format(item['name'], item['count'])
-    statistic_string = functools.reduce(product_sold_total_times, cursor, title) + ending
+    statistic_string = reduce(product_sold_total_times, cursor, title) + ending
 
     return statistic_string
 
@@ -37,7 +36,7 @@ def specific_product_sales(db, shop_id):
     title = f'---------Report---------\nProducts:{skus_string} sold between {date1_str} and {date2_str}\n'
     ending = '\n---------End---------'
     product_sold_total_times = lambda acc, item: acc + '\n{0:25} amount: {1}'.format(item['name'], item['count'])
-    statistic_string = functools.reduce(product_sold_total_times, cursor, title) + ending
+    statistic_string = reduce(product_sold_total_times, cursor, title) + ending
 
     return statistic_string
 
@@ -48,7 +47,7 @@ def avg_sales_per_city(db, shop_id):
     title = f'---------Report---------\nAverage sales per customer per city\n'
     ending = '\n---------End---------'
     avg_sales_per_city = lambda acc, item: acc + '\n{0:10} amount: {1}'.format(item['_id'], item['avg_sales_per_customer'])
-    statistic_string = functools.reduce(avg_sales_per_city, cursor, title) + ending
+    statistic_string = reduce(avg_sales_per_city, cursor, title) + ending
 
     return statistic_string
 
@@ -57,19 +56,12 @@ def stock_quantities(db, shop_id):
     date1_str, date2_str = enter_time_period()
     cursor = stock_quantities_by_dates(db, shop_id, time_period(date1_str, date2_str))
 
-    result = f'---------Report---------\nStock quantities between {date1_str} and {date2_str}\n'
-    for item in cursor:
-        date = item['date']
-        stock_quantities = item['stock_quantities']
+    title = ('---------Report---------\n'
+            f'Stock quantities between {date1_str} and {date2_str}\n')
 
-        stock_quantities_string = ''
-        for k,v in stock_quantities.items():
-            item_str = '\nsku: {0:6} qty: {1:5}'.format(k, v)
-            stock_quantities_string += item_str
-
-        item_str = '\n\ndate: {0:10} \n {1}'.format(date.strftime("%Y-%m-%d"), stock_quantities_string)
-        result += item_str
-
+    stock = lambda x: reduce(lambda acc, prod: acc + '\nsku: {0:6} qty: {1:5}'.format(prod[0], prod[1]), x, '')
+    fun = lambda acc, x: acc + '\n\ndate: {0:10} \n {1}'.format(x['date'].strftime("%Y-%m-%d"), stock(list(x['stock_quantities'].items())))
+    result = reduce(fun, cursor, title)
     return result + '\n---------End---------'
 
 
