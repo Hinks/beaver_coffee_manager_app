@@ -1,9 +1,5 @@
 from datetime import datetime
 from functools import reduce
-from statistics.build_result import (
-    report_5_string,
-    report_6_string,
-    report_7_string)
 
 from statistics.queries import (
     sales_all_products_by_dates,
@@ -70,21 +66,30 @@ def serverd_orders_employee(db, shop_id):
     date1_str, date2_str = enter_time_period()
 
     cursor = orders_served_by_employee(db, shop_id, employee_id, time_period(date1_str, date2_str))
-    result = report_5_string(cursor, date1_str, date2_str)
-    return result
+
+    title = f'---------Report---------\nOrders served by employee between {date1_str} and {date2_str}\n'
+    served_orders = lambda x: reduce(lambda acc, id: acc + '\n' + str(id), x, '')
+    orders_by_employee = lambda acc, item: acc + 'Orders served: {0}.\nOrder ids:{1} '.format(item['amount'], served_orders(item['served_orders']))
+    result = reduce(orders_by_employee, cursor, title)
+    return result + '\n---------End---------'
 
 
 def employee_listing(db, shop_id):
     date1_str, date2_str = enter_time_period()
     cursor = list_employees_by_dates(db, shop_id, time_period(date1_str, date2_str))
-    result = report_6_string(cursor, date1_str, date2_str)
-    return result
+
+    title = f'---------Report---------\nEmployees listing for shop, between {date1_str} and {date2_str}\n'
+    result = reduce(lambda acc, item: acc + '\nssn: {0}\nname: {1}\nStarted to work: {2}\n'.format(item['ssn'], item['name'], item['entry_date']), cursor, title)
+    return result + '\n---------End---------'
+
 
 def customer_listing(db, shop_id):
     date1_str, date2_str = enter_time_period()
     cursor = list_customer_by_dates(db, shop_id, time_period(date1_str, date2_str))
-    result = report_7_string(cursor, date1_str, date2_str)
-    return result
+
+    title = f'---------Report---------\nActive buying customers at the shop between {date1_str} and {date2_str}\n'
+    result = reduce(lambda acc, item: acc + '\n{0}'.format(item['_id']), cursor, title + '\nListing of customers id:')
+    return result + '\n---------End---------'
 
 
 def time_period(start_date_str, end_date_str):
