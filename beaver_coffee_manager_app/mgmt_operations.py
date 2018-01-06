@@ -42,7 +42,7 @@ def select_mgmt_operation(db, next_state, user_session):
     try:
         context_operation = buisness_logic_context[choice]
 
-        if next_state == 'statistics' or 'cru_employee' or 'cru_stock':
+        if next_state == 'statistics' or 'cru_employee' or 'cru_customer':
             result = context_operation(db, user_session['shop_id'])
             print(result)
             print_utils.instructions_after(next_state)()
