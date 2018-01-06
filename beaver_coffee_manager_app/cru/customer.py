@@ -4,7 +4,7 @@ from random import randint
 import json
 import datetime
 
-def create(db):
+def create(db, shop_id):
     new_customer = create_customer()
     return db.reg_customers.insert_one(new_customer)
 
@@ -32,7 +32,7 @@ def create_customer():
     return customer_document
 
 
-def read(db):
+def read(db, shop_id):
     customer_id_str = input('Enter id for customer to read: ')
     customer_id = ObjectId(customer_id_str)
     customer = db.reg_customers.find_one({'_id': customer_id})
@@ -59,7 +59,7 @@ def customer_info_str(customer):
     return info_str
 
 
-def update(db):
+def update(db, shop_id):
     customer_id_str = input('Enter id for customer to read: ')
     customer_id = ObjectId(customer_id_str)
 
