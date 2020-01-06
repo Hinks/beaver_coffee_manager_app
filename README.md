@@ -1,23 +1,35 @@
-# beaver_coffee_manager_app
-1. Before you can run this application,
-you have to meet the requirements in requirements.txt
+# BeaverCoffee
 
-1. start a local mongodb-server.
-2. run the init-script in the shell by typing: mongo localhost:27017/beaver db_init_script.js
-3. run the python app by typing the following in the shell inside the top directory: python3.6 beaver_coffee_manager_app/app.py
+```console
+> git clone https://github.com/Hinks/beaver_coffee_manager_app.git
+> cd beaver_coffee_manager_app
+> docker-compose up
+```
 
-Some of the queries require knowledge of id:s and ssn:s.
-For example have a mongo shell open alongside the app and find the right id:s and ssn:s
-by queries like:
+**It is required to have two terminal windows open to test out the application. One for the console-app itself and another for 
+running needed db-queries that prints out needed id:s and ssn:s.**
+
+Open up a new terminal window and connect to the python-app-container and run the console-app by:
+```console
+> docker exec -it docker-beaver-app sh
+> python src/app.py
+```
+
+Open up another terminal window and connect to the mongo-container and run needed db-queries to print out id:s and ssn:s.
+```console
+> docker exec -it mongo-beaver mongo
+> use beaver
+> show collections
+```
 
 
-db.branch_managers.find().pretty()
-
-
-db.sales_managers.find().pretty()
-
-
-db.employees.find().pretty()
-
-
-db.reg_customers.find().pretty()
+```console
+> db.branch_managers.find().pretty()
+{...}
+> db.sales_managers.find().pretty()
+{...}
+> db.employees.find().pretty()
+{...}
+> db.reg_customers.find().pretty()
+{...}
+```
