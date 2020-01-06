@@ -1,7 +1,2 @@
-Python v3.6+
-mongodb v3.4+
-
-Dependencies/libraries: pymongo, toolz
-To install:
-pip3.6 install pymongo
-pip3.6 install toolz
+pymongo==3.9.0
+toolz==0.10.0

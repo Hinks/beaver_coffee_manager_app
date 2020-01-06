@@ -1,0 +1,18 @@
+version: '3'
+services: 
+  console-app:
+    container_name: docker-beaver-app
+    build: .
+    volumes: 
+      - ./:/code
+    stdin_open: true
+    tty: true
+  mongo: 
+    container_name: mongo-beaver
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=beaver
+    volumes: 
+      - ./db_init_script.js:/docker-entrypoint-initdb.d/db_init_script.js
+    ports: 
+      - '27017:27017'

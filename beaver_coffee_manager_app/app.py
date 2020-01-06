@@ -4,7 +4,7 @@ from rules import default_app_data
 
 
 def main():
-    client = MongoClient('mongodb://localhost:27017/beaver')
+    client = MongoClient('mongodb://mongo:27017/beaver')
     db = client.beaver
     print('connected to database')
 
